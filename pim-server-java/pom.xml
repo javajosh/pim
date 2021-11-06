@@ -2,23 +2,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
+  <parent>
     <groupId>groupId</groupId>
-    <artifactId>PersonalInventoryManager</artifactId>
+    <artifactId>javajosh-pim</artifactId>
     <version>1.0-SNAPSHOT</version>
+  </parent>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <dropwizard.version>2.1.0-beta.4</dropwizard.version>
-    </properties>
-    <dependencies>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-            <version>${dropwizard.version}</version>
-        </dependency>
-    </dependencies>
+  <groupId>com.javajosh</groupId>
+  <artifactId>pim-server-java</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <description>Java Server tech demo with Dropwizard</description>
+  <url>https://github.com/javajosh/pim</url>
+
+  <properties>
+    <dropwizard.version>2.1.0-beta.4</dropwizard.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -8,15 +8,18 @@ import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 import java.util.Random;
 
-/** Request handler or servlet,  called a Resource in Dropwizard, should be threadsafe. */
+/**
+ * Request handler or servlet,  called a Resource in Dropwizard, should be threadsafe.
+ */
 @Path("/item")
 @Produces(MediaType.APPLICATION_JSON)
 public class ItemResource {
-    public ItemResource(){}
+  public ItemResource() {
+  }
 
-    /* Incredibly clunky way to specify an optional with default */
-    @GET
-    public Item getRandomItem(@QueryParam("name") Optional<String> name){
-        return new Item(new Random().nextLong(), name.orElse(""));
-    }
+  /* Incredibly clunky way to specify an optional with default */
+  @GET
+  public Item getRandomItem(@QueryParam("name") Optional<String> name) {
+    return new Item(new Random().nextLong(), name.orElse(""));
+  }
 }
