@@ -6,3 +6,5 @@ code at [github.com/javajosh/pim](https://github.com/javajosh/pim) live demo hos
 The core of the demo is a Java webapp talking to a relational database, with some [improvements](pim-server-java/docs/tech-stack-discussion.md)
 
 [install log](./install_log.md)
+
+[notes on intellij's http support](./pim-server-java/docs/intellij/readme.md)
