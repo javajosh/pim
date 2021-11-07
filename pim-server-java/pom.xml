@@ -14,12 +14,13 @@
   <artifactId>pim-server-java</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <properties>
+    <dropwizard.version>2.0.25</dropwizard.version>
+  </properties>
   <description>Java Server tech demo with Dropwizard</description>
   <url>https://github.com/javajosh/pim</url>
 
-  <properties>
-    <dropwizard.version>2.1.0-beta.4</dropwizard.version>
-  </properties>
+
 
   <dependencies>
     <dependency>
@@ -27,6 +28,13 @@
       <artifactId>dropwizard-core</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-client</artifactId>
+      <version>2.0.25</version>
+    </dependency>
+
   </dependencies>
 
 </project>
