@@ -1,4 +1,4 @@
-package com.javajosh.personal.inventory;
+package com.javajosh.pim;
 
 public class Main {
   public static void main(String[] args) {

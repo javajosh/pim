@@ -1,4 +1,4 @@
-package com.javajosh.personal.inventory;
+package com.javajosh.pim;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

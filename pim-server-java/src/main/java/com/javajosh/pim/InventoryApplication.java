@@ -1,4 +1,4 @@
-package com.javajosh.personal.inventory;
+package com.javajosh.pim;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
