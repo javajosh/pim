@@ -6,8 +6,11 @@ import io.dropwizard.setup.Environment;
 
 public class InventoryApplication extends Application<InventoryConfiguration> {
 
-  // This is the main entry point, but you are immediately delegating to components
-  // that require
+  @Override /* We can put things into the bootstrap before our own run code is called. */
+  public void initialize(Bootstrap<InventoryConfiguration> bootstrap) {
+    bootstrap.addCommand(new HttpClientCommand());
+  }
+
   public static void main(String[] args) throws Exception {
     new InventoryApplication().run(args);
   }
