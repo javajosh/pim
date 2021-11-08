@@ -2,11 +2,10 @@ package com.javajosh.pim;
 
 import ch.qos.logback.classic.Logger;
 import io.dropwizard.logging.LoggingUtil;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 import java.util.Random;
@@ -15,11 +14,15 @@ import java.util.Random;
  * Request handler or servlet, called a Resource in Dropwizard; should be threadsafe.
  */
 @Path("/item")
+@RegisterBeanMapper(ItemResource.class)
 @Produces(MediaType.APPLICATION_JSON)
 public class ItemResource {
   final Logger log = LoggingUtil.getLoggerContext().getLogger(ItemResource.class);
+  private final Jdbi jdbi;
 
-  public ItemResource() {}
+  public ItemResource(Jdbi jdbi) {
+    this.jdbi = jdbi;
+  }
 
   /*
    * /item/random?name=foobar => Item(id=random(), name=foobar).json()
@@ -31,14 +34,15 @@ public class ItemResource {
   @Path("/random")
   public Item getRandomItem(@QueryParam("name") Optional<String> name) {
     // do anything here!
-    long randomId = new Random().nextLong();
+    int randomId = new Random().nextInt();
     log.debug("hello {}", randomId);
     return new Item(randomId, name.orElse(""));
   }
 
   @GET
-  public Item getItem(@QueryParam("id") int id) {
-    // do anything here!
-    return new Item(id, "josh");
+  @Path("/{id}")
+  public Item getItem(@PathParam("id") int id) {
+    log.debug("Entered /item/{} -> ItemResource.getItem({})", id, id);
+    return jdbi.withExtension(ItemDAO.class, dao -> dao.findById(id));
   }
 }

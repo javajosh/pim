@@ -37,3 +37,8 @@ Content-Type: application/json
 
 ### Test out an easy-to-call endpoint
 GET http://localhost:8080/item/random
+
+### Test out an easy-to-call endpoint
+GET http://localhost:8080/item/1
+
+###
