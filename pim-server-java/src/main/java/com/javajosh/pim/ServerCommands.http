@@ -1,0 +1,39 @@
+### Set logger to debug for 10 minutes
+POST http://localhost:8081/tasks/log-level
+Content-Type: application/x-www-form-urlencoded
+
+level=INFO
+
+### Set our logger to debug
+POST http://localhost:8081/tasks/log-level
+Content-Type: application/x-www-form-urlencoded
+
+logger=com.javajosh.pim&level=DEBUG
+
+
+### Set our logger to debug for 10 minutes
+POST http://localhost:8081/tasks/log-level
+Content-Type: application/x-www-form-urlencoded
+
+logger=com.javajosh.pim&level=DEBUG&duration=PT10M
+
+
+### Reset logger to default
+POST http://localhost:8081/tasks/log-level
+Content-Type: application/x-www-form-urlencoded
+
+logger=com.javajosh.pim
+
+
+### Try it with JSON
+POST http://localhost:8081/tasks/log-level
+Content-Type: application/json
+
+{
+  "logger":"com.javajosh.pim",
+  "level":"DEBUG",
+  "duration":"PT10M"
+}
+
+### Test out an easy-to-call endpoint
+GET http://localhost:8080/item/random

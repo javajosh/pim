@@ -1,5 +1,8 @@
 package com.javajosh.pim;
 
+import ch.qos.logback.classic.Logger;
+import io.dropwizard.logging.LoggingUtil;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,6 +17,7 @@ import java.util.Random;
 @Path("/item")
 @Produces(MediaType.APPLICATION_JSON)
 public class ItemResource {
+  final Logger log = LoggingUtil.getLoggerContext().getLogger(ItemResource.class);
 
   public ItemResource() {}
 
@@ -28,6 +32,7 @@ public class ItemResource {
   public Item getRandomItem(@QueryParam("name") Optional<String> name) {
     // do anything here!
     long randomId = new Random().nextLong();
+    log.debug("hello {}", randomId);
     return new Item(randomId, name.orElse(""));
   }
 

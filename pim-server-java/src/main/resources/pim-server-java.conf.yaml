@@ -9,3 +9,8 @@ httpClient:
   keepAlive: 0ms
   retries: 0
   userAgent: javajosh-pim (primary)
+
+logging:
+  level: INFO
+  loggers:
+    "com.javajosh.pim": DEBUG
