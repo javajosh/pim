@@ -40,8 +40,6 @@
       <version>${dropwizard.version}</version>
     </dependency>
 
-
-
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -49,5 +47,27 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.sebastian-daschner</groupId>
+        <artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+        <version>0.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>analyze-jaxrs</goal>
+            </goals>
+            <configuration>
+              <!-- Available backends are plaintext (default), swagger and asciidoc -->
+              <backend>swagger</backend>
+              <deployedDomain>javajosh.com</deployedDomain>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
