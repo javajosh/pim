@@ -9,17 +9,31 @@ import java.util.Optional;
 import java.util.Random;
 
 /**
- * Request handler or servlet,  called a Resource in Dropwizard, should be threadsafe.
+ * Request handler or servlet, called a Resource in Dropwizard; should be threadsafe.
  */
 @Path("/item")
 @Produces(MediaType.APPLICATION_JSON)
 public class ItemResource {
-  public ItemResource() {
+
+  public ItemResource() {}
+
+  /*
+   * /item/random?name=foobar => Item(id=random(), name=foobar).json()
+   * Generate a synthetic Item and return it.
+   * A named function with named string args that returns an instance of the static Item type.
+   * JAXWS is used to annotate the class, method, and params to map to the URL.
+   */
+  @GET
+  @Path("/random")
+  public Item getRandomItem(@QueryParam("name") Optional<String> name) {
+    // do anything here!
+    long randomId = new Random().nextLong();
+    return new Item(randomId, name.orElse(""));
   }
 
-  /* Incredibly clunky way to specify an optional with default */
   @GET
-  public Item getRandomItem(@QueryParam("name") Optional<String> name) {
-    return new Item(new Random().nextLong(), name.orElse(""));
+  public Item getItem(@QueryParam("id") int id) {
+    // do anything here!
+    return new Item(id, "josh");
   }
 }
