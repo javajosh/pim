@@ -41,8 +41,14 @@ GET http://localhost:8080/item/random
 ### Test out an easy-to-call endpoint
 GET http://localhost:8080/item/1
 
-### Test out the post
+### A good update - name not too long
+POST http://localhost:8080/item/1?name=adfja
+
+### Both of these error modes just return a 500 for now.
+### A bad update - name too long
 POST http://localhost:8080/item/1?name=adfjahdfkahdf
 
+### A bad update - no such id
+POST http://localhost:8080/item/2?name=adfjahdfkahdf
 
 
