@@ -41,4 +41,8 @@ GET http://localhost:8080/item/random
 ### Test out an easy-to-call endpoint
 GET http://localhost:8080/item/1
 
-###
+### Test out the post
+POST http://localhost:8080/item/1?name=adfjahdfkahdf
+
+
+

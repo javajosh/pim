@@ -33,7 +33,6 @@ public class ItemResource {
   @GET
   @Path("/random")
   public Item getRandomItem(@QueryParam("name") Optional<String> name) {
-    // do anything here!
     int randomId = new Random().nextInt();
     log.debug("hello {}", randomId);
     return new Item(randomId, name.orElse(""));
@@ -42,7 +41,14 @@ public class ItemResource {
   @GET
   @Path("/{id}")
   public Item getItem(@PathParam("id") int id) {
-    log.debug("Entered /item/{} -> ItemResource.getItem({})", id, id);
+    log.debug("GET /item/{} -> ItemResource.getItem({})", id, id);
     return jdbi.withExtension(ItemDAO.class, dao -> dao.findById(id));
+  }
+
+  @POST
+  @Path("/{id}")
+  public boolean updateItem(@PathParam("id") int id, @QueryParam("name") String name) {
+    log.debug("POST /item/{}?name={} -> ItemResource.updateItem({},{})", id, name, id, name);
+    return jdbi.withExtension(ItemDAO.class, dao -> dao.updateItem(id, name));
   }
 }
