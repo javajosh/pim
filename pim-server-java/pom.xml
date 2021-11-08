@@ -3,6 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <description>Java Server tech demo with Dropwizard</description>
+  <url>https://github.com/javajosh/pim</url>
 
   <parent>
     <groupId>groupId</groupId>
@@ -18,10 +20,6 @@
     <dropwizard.version>2.0.25</dropwizard.version>
     <postgresql.version>42.3.1</postgresql.version>
   </properties>
-  <description>Java Server tech demo with Dropwizard</description>
-  <url>https://github.com/javajosh/pim</url>
-
-
 
   <dependencies>
     <dependency>
@@ -33,7 +31,7 @@
     <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-client</artifactId>
-      <version>2.0.25</version>
+      <version>${dropwizard.version}</version>
     </dependency>
 
     <dependency>
