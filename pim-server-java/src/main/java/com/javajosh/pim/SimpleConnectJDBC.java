@@ -1,4 +1,4 @@
-package com.javajosh.postgres;
+package com.javajosh.pim;
 
 import java.sql.*;
 import java.time.ZoneId;

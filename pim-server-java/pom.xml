@@ -16,6 +16,7 @@
 
   <properties>
     <dropwizard.version>2.0.25</dropwizard.version>
+    <postgresql.version>42.3.1</postgresql.version>
   </properties>
   <description>Java Server tech demo with Dropwizard</description>
   <url>https://github.com/javajosh/pim</url>
@@ -33,6 +34,12 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-client</artifactId>
       <version>2.0.25</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
     </dependency>
 
   </dependencies>
