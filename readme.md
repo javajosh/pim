@@ -19,17 +19,29 @@ Environment variables are set in various ways in various environments.
 IntelliJ has good ad hoc support in its run configurations.
 
 TODO:
- 1. Add the asset bundle and play with that.
- 2. Go deeper into JDBI. Have only scratched the surface.
- 3. Go deeper into Logging, particularly with practical tail problems.
- 4. Go deeper into Jersey; can you generate swagger?
- 5. Go deeper into metrics.
- 6. Go deeper into testing
-    1. Unit testing with junit and assertj
-    2. Functional testing with ... ?
-    3. Load testing with ... ab?
- 7. Go wider into alternative databases: H2, Derby; SQLite
- 8. Build out the front-end with traditional server-side rendering
- 9. Build out the front-end with a modern SPA (Angular & React)
- 10. Build out some CI triggered by Github.
- 11. Build out OAuth2 support for Google, Facebook, Apple, Microsoft, Github
+ 1. [ ] Add the asset bundle and play with it.
+ 2. [ ] Add DW "migration" support and play with it.
+ 3. [ ] Go deeper into JDBI. Have only scratched the surface.
+ 4. [ ] Go deeper into Logging, particularly with practical tail problems.
+ 5. [ ] Go deeper into Java 17 and all it's new features, especially gc options.
+ 6. [ ] Go deeper into Postgres 14, especially it's stored procedures, replication, backups.
+ 7. [x] ~~Generate swagger from jax rs~~
+ 8. [ ] Go deeper into Jersey
+ 9. [ ] Go deeper into DW.metrics.
+ 10. [ ] Go deeper into JVM.metrics
+ 11. [ ] Go deeper into testing
+     1. [ ] Unit testing with junit and assertj
+     2. [ ] Functional testing with ... ?
+     3. [ ] Load testing with ... ab? Something custom?
+ 12. [ ] Go wider into alternative databases: H2, Derby; SQLite
+ 13. [ ] Go wider into alternative build tools: gradle, Play
+ 14. [ ] Go wider into alternative JVM-hosted languages: Kotlin, Clojure, Groovy
+ 15. [ ] Integrate JRebel into the server to avoid restarting on code changes.
+ 16. [ ] Build out Docker support
+ 17. [ ] Build out k8s (OCP?) support  - local and hosted
+ 18. [ ] Build out the front-end with traditional server-side rendering
+ 19. [ ] Build out the front-end with a modern SPA (Angular & React)
+ 20. [ ] Build out some CI triggered by GitHub polling.
+ 21. [ ] Build out OAuth2 support for Google, Facebook, Apple, Microsoft, Github.
+ 22. [ ] Demo a cluster of DW nodes behind an HAProxy node and measure performance/failure modes.
+ 23. [ ] Write up a comprehensive threat model, standard OWASP and also supply chain and local physical attack.
