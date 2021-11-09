@@ -1,6 +1,7 @@
 package com.javajosh.pim;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -31,6 +32,14 @@ public class InventoryApplication extends Application<InventoryConfiguration> {
         new EnvironmentVariableSubstitutor(false)
       )
     );
+
+    // Relative paths don't work because the AssetsBundle only serves from classpath
+    bootstrap.addBundle(new AssetsBundle("../pim-client-angular/dist", "/"));
+    // Creating a symlink doesn't work practically, but it also wouldn't work
+    // theoretically because the assetsBundle isn't doing normal File IO
+    // PS C:\> cd pim\pim-server-java\src\main\resources
+    // PS C:\> New-Item -Path bundle -ItemType  SymbolicLink -Value ..\..\..\..\pim-client-angular\dist
+
   }
 
   @Override /* This is a template method called indirectly by the run(String[]) method */
