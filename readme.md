@@ -16,4 +16,20 @@ This software expects you to put sensitive secrets into the process shell, which
 4. `DB_PASSWORD` default '' (empty string)
 
 Environment variables are set in various ways in various environments. 
-IntelliJ has good ad hoc support in it's run configurtations
+IntelliJ has good ad hoc support in its run configurations.
+
+TODO:
+ 1. Add the asset bundle and play with that.
+ 2. Go deeper into JDBI. Have only scratched the surface.
+ 3. Go deeper into Logging, particularly with practical tail problems.
+ 4. Go deeper into Jersey; can you generate swagger?
+ 5. Go deeper into metrics.
+ 6. Go deeper into testing
+    1. Unit testing with junit and assertj
+    2. Functional testing with ... ?
+    3. Load testing with ... ab?
+ 7. Go wider into alternative databases: H2, Derby; SQLite
+ 8. Build out the front-end with traditional server-side rendering
+ 9. Build out the front-end with a modern SPA (Angular & React)
+ 10. Build out some CI triggered by Github.
+ 11. Build out OAuth2 support for Google, Facebook, Apple, Microsoft, Github
