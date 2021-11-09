@@ -8,7 +8,7 @@ httpClient:
   maxConnectionsPerRoute: 1024
   keepAlive: 0ms
   retries: 0
-  userAgent: javajosh_pim_server (primary)
+  userAgent: javajosh_pim_server
 
 logging:
   level: INFO
@@ -40,3 +40,7 @@ database:
   evictionInterval: 10s
   # the minimum amount of time a connection must sit idle in the pool before it is eligible for eviction
   minIdleTime: 1 minute
+
+assets:
+  overrides:
+    /bundle: C:\Users\alber\IdeaProjects\pim\pim-client-angular\dist\Client

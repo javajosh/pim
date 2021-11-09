@@ -2,6 +2,8 @@ package com.javajosh.pim;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.bundles.assets.AssetsBundleConfiguration;
+import io.dropwizard.bundles.assets.AssetsConfiguration;
 import io.dropwizard.client.HttpClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 
@@ -9,7 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class InventoryConfiguration extends Configuration {
+public class InventoryConfiguration extends Configuration implements AssetsBundleConfiguration  {
 
   @Valid
   @NotNull
@@ -50,6 +52,16 @@ public class InventoryConfiguration extends Configuration {
   @JsonProperty("database")
   public DataSourceFactory getDataSourceFactory() {
     return database;
+  }
+
+  @Valid
+  @NotNull
+  @JsonProperty
+  private final AssetsConfiguration assets = AssetsConfiguration.builder().build();
+
+  @Override
+  public AssetsConfiguration getAssetsConfiguration() {
+    return assets;
   }
 
 }
