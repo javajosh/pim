@@ -19,7 +19,7 @@
   <modules>
     <module>pim-core-java</module>
     <module>pim-server-java</module>
-    <module>pim-db-postgres</module>
+    <module>pim-server-postgres</module>
     <module>pim-client-java</module>
   </modules>
 

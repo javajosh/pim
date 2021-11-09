@@ -45,3 +45,4 @@ TODO:
  21. [ ] Build out OAuth2 support for Google, Facebook, Apple, Microsoft, Github.
  22. [ ] Demo a cluster of DW nodes behind an HAProxy node and measure performance/failure modes.
  23. [ ] Write up a comprehensive threat model, standard OWASP and also supply chain and local physical attack.
+ 24. [ ] Add TLS with Let's Encrypt.
