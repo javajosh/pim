@@ -1,0 +1,121 @@
+import { createServer } from 'http';
+import { parse } from 'url';
+import { WebSocketServer } from 'ws';
+import crypto from "crypto";
+
+const server = createServer();
+const wss = new WebSocketServer({ noServer: true });
+
+wss.on('connection', function connection(ws) {
+  // ...
+});
+
+
+
+server.on('upgrade', function upgrade(request, socket, head) {
+  const { pathname } = parse(request.url);
+
+  if (pathname === '/foo') {
+    wss.handleUpgrade(request, socket, head, function done(ws) {
+      wss.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+server.listen(8080);
+
+
+.on('upgrade',(req, socket) => {
+  if (req.headers['upgrade'] !== 'websocket') {
+    socket.end('HTTP/1.1 400 Bad Request');
+    return;
+  }
+  console.log('UPGRADE http://127.0.0.1:2000/');
+  // Read the websocket key provided by the client:
+  const acceptKey = req.headers['sec-websocket-key'];
+  const hash = generateAcceptValue(acceptKey);
+  const responseHeaders = [
+    'HTTP/1.1 101 Web Socket Protocol Handshake',
+    'Upgrade: WebSocket',
+    'Connection: Upgrade',
+    `Sec-WebSocket-Accept: ${hash}`
+  ];
+  const protocol = req.headers['sec-websocket-protocol'];
+  const protocols = !protocol ? [] : protocol.split(',').map(s => s.trim());
+
+  if (protocols.includes('json')) {
+    responseHeaders.push(`Sec-WebSocket-Protocol: json`);
+  }
+  // Write the response back to the client socket, being sure to append two
+  // additional newlines so that the browser recognises the end of the response
+  // header and doesn't continue to wait for more header data:
+  socket.write(responseHeaders.join('\r\n') + '\r\n\r\n');
+  socket.addListener('data', buffer => {
+    const message = parseMessage(buffer);
+    console.log('MESSAGE http://127.0.0.1:2000/', buffer, message);
+    socket.write(constructReply('thanks for the message ' + message));
+  })
+})
+
+function generateAcceptValue (acceptKey) {
+  return crypto
+    .createHash('sha1')
+    .update(acceptKey + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', 'binary')
+    .digest('base64');
+}
+
+function parseMessage (buffer) {
+  const firstByte = buffer.readUInt8(0);
+  const isFinalFrame = Boolean((firstByte >>> 7) & 0x1);
+  const [reserved1, reserved2, reserved3] = [ Boolean((firstByte >>> 6) & 0x1), Boolean((firstByte >>> 5) & 0x1), Boolean((firstByte >>> 4) & 0x1) ];
+  const opCode = firstByte & 0xF;
+  // We can return null to signify that this is a connection termination frame
+  // if (opCode === 0x8)
+  // return null;
+  // We only care about text frames from this point onward
+  if (opCode !== 0x1)
+    return;
+
+  const secondByte = buffer.readUInt8(1);
+  const isMasked = Boolean((secondByte >>> 7) & 0x1);
+  // Keep track of our current position as we advance through the buffer
+  let currentOffset = 2;
+  let payloadLength = secondByte & 0x7F;
+  if (payloadLength > 125) {
+    if (payloadLength === 126) {
+      payloadLength = buffer.readUInt16BE(currentOffset);
+      currentOffset += 2;
+    } else {
+      // 127
+      // If this has a value, the frame size is ridiculously huge!
+      const leftPart = buffer.readUInt32BE(currentOffset);
+      const rightPart = buffer.readUInt32BE(currentOffset += 4);
+      throw new Error('Large payloads not currently implemented');
+    }
+  }
+}
+
+
+function constructReply (data) {
+  // Convert the data to JSON and copy it into a buffer
+  const json = JSON.stringify(data)
+  const jsonByteLength = Buffer.byteLength(json);
+  // Note: we're not supporting > 65535 byte payloads at this stage
+  const lengthByteCount = jsonByteLength < 126 ? 0 : 2;
+  const payloadLength = lengthByteCount === 0 ? jsonByteLength : 126;
+  const buffer = Buffer.alloc(2 + lengthByteCount + jsonByteLength);
+  // Write out the first byte, using opcode `1` to indicate that the message
+  // payload contains text data
+  buffer.writeUInt8(0b10000001, 0);
+  buffer.writeUInt8(payloadLength, 1);
+  // Write the length of the JSON payload to the second byte
+  let payloadOffset = 2;
+  if (lengthByteCount > 0) {
+    buffer.writeUInt16BE(jsonByteLength, 2); payloadOffset += lengthByteCount;
+  }
+  // Write the JSON data to the data buffer
+  buffer.write(json, payloadOffset);
+  return buffer;
+}
