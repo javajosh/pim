@@ -25,24 +25,22 @@ const server = createServer(function (request, response) {
   const ext = extname(filePath);
   let contentType = contentTypes[ext] ? contentTypes[ext] : 'text/html';
 
-  readFile(filePath, function(error, content) {
+  readFile(filePath, function (error, responseContent =  "something bad happened") {
+    let responseCode;
+    const responseCodesFromErrorCodes = {
+      'ENOENT': 404
+    };
+
     if (error) {
-      if(error.code === 'ENOENT'){
-        readFile('./404.html', function(error, content) {
-          response.writeHead(200, { 'Content-Type': contentType });
-          response.end(content, 'utf-8');
-        });
-      }
-      else {
-        response.writeHead(500);
-        response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-        response.end();
-      }
+      responseCode = responseCodesFromErrorCodes[error.code] ? responseCodesFromErrorCodes[error.code]: 500;
+      readFile(`./${responseCode}.html`, (err, content) => {
+        responseContent = content
+      });
+    } else {
+      responseCode = 200;
     }
-    else {
-      response.writeHead(200, { 'Content-Type': contentType });
-      response.end(content, 'utf-8');
-    }
+    response.writeHead(responseCode, {'Content-Type': contentType});
+    response.end(responseContent, 'utf-8');
   });
 
 }).listen(port);
@@ -53,10 +51,10 @@ const wss = new WebSocketServer({server});
 // Later we'll add PKI and point-to-point fanout
 const conns = [];
 wss.on('connection', conn => {
-  console.log ('CONNECTION %s', conn);
+  console.log('CONNECTION %s %s', conn.url, conn.protocol);
   conns.push(conn);
   conn.on('message', msg => {
-    console.log ('MESSAGE %s', msg);
+    console.log('MESSAGE %s', msg);
     conns.forEach(c => {
       if (c && c.readyState === 1){ // add && c !== conn to not send to self
         c.send(msg.toString());
