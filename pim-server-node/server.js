@@ -14,13 +14,13 @@ const server = createServer(function (request, response) {
   if (filePath === './') filePath = './index.html';
 
   const contentTypes = {
-    'html':'text/html',
-    'js':'text/javascript',
-    'css':'text/css',
-    'json':'application/json',
-    'png':'image/png',
-    'jpg':'image/jpg',
-    'wav':'audio/wav',
+    '.html':'text/html',
+    '.js':'text/javascript',
+    '.css':'text/css',
+    '.json':'application/json',
+    '.png':'image/png',
+    '.jpg':'image/jpg',
+    '.wav':'audio/wav',
   };
   const ext = extname(filePath);
   let contentType = contentTypes[ext] ? contentTypes[ext] : 'text/html';
@@ -58,7 +58,7 @@ wss.on('connection', conn => {
   conn.on('message', msg => {
     console.log ('MESSAGE %s', msg);
     conns.forEach(c => {
-      if (c && c.readyState === 1 && c !== conn){
+      if (c && c.readyState === 1){ // add && c !== conn to not send to self
         c.send(msg.toString());
       }
     })

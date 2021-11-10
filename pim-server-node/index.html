@@ -9,13 +9,16 @@
 </head>
 <body>
 
-<script>
+<script type="module">
+  import { combine } from './simpatico/combine.js';
+
+  const has = key => !!localStorage.getItem(key);
   const get = key => localStorage.getItem(key);
   const put = (key,value) => localStorage.setItem(key, value);
 
-  const App = get(window.origin) || {
+  const state = has(window.origin) ? JSON.parse(get(window.origin)) : {
     origin: window.origin,
-    homepage: "simpatico.io or github.com/simpatico",
+    homepage: "simpatico.io",
     version: "1.0",
     description: "Open a websocket and keep it up; track some lifetime stats",
     webSocket: {
@@ -26,19 +29,38 @@
       close: 0,
       started: 'time',
       stopped: 'time',
-      uptime: 'duration',
-    },
+      uptime: 0,
+    }
   };
+  window.state = state; window.combine = combine; //expose for adhoc usage
 
-  const socket = new WebSocket('ws://127.0.0.1:2000',['json']);
-  socket.onopen = () => Object.assign(App.webSocket, {open: 1, started: new Date().getUTCDate()});
-  socket.onclose = () => Object.assign(App.webSocket, {close: 1,stopped: new Date().getUTCDate(), duration: 'subtract'});
-  socket.onerror = e => Object.assign(App.webSocket, {error: 1}, {errorLog: e});
-  socket.onmessage = e => {
-    Object.assign(App.webSocket, {message: 1}, {lastMessage: e.data});
-    console.log(e);
+  const wsProto = (window.location.protocol === "https:") ? "wss://" : "ws://";
+  const webSocketURL = wsProto + window.location.host + "/ws";
+
+  const socket = new WebSocket(webSocketURL,['json']);
+  socket.onopen = () => {
+    state.webSocket = combine(state.webSocket, {open: 1, started: Date.now() + ''}); //stringify the number to ensure it replaces, and doesn't add
+    put(window.origin, JSON.stringify(state));
   }
-  App.webSocket.currentSocket = socket;
+  socket.onclose = () => {
+    const started = state.webSocket.started;
+    const stopped = Date.now() + ''; //stringify the number to ensure it replaces, and doesn't add
+    const uptime = 1 * stopped - 1 * started;
+    state.webSocket = combine(state.webSocket, {close: 1, stopped, uptime, currentSocket: null});
+    put(window.origin, JSON.stringify(state));
+  }
+  socket.onerror = e => {
+    state.webSocket = combine(state.webSocket, {error: 1, errorLog: [e.data]});
+  }
+  socket.onmessage = e => {
+    console.log('onmessage %s', e.data);
+    state.webSocket = combine(state.webSocket, {message: 1, lastMessage: e.data});
+
+  }
+  state.currentSocket = socket;
+
+  // Now you can send things to the server with socket.send(msg)
+  // To receive, it's the body of onmessage.
 
 </script>
 </body>
