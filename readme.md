@@ -46,3 +46,47 @@ TODO:
  22. [ ] Demo a cluster of DW nodes behind an HAProxy node and measure performance/failure modes.
  23. [ ] Write up a comprehensive threat model, standard OWASP and also supply chain and local physical attack.
  24. [ ] Add TLS with Let's Encrypt.
+ 25. Is there a version of Maven that downloads source and builds all deps, transitively?
+ 26. How do we know that the binaries in Maven Central are safe? (Not made by or vuln to malicious actor) Any process that can write to ~/.m2
+ 27. "Pure Java" projects can build from only Java source plus jar files produced by other Pure Java projects.
+ 28. An Application is almost never Pure Java in practice, as it includes non-Java components, or itself requires a platform specific environment.
+ 29. The best stuff is often written in other languages, for other runtimes. (Postgres, Redis, nginx, something-in-Rust)
+ 30. Docker lets you define a well-known starting point (binary UBI) and then range out to a more convenient starting point with a Dockerfile
+ 31. The running process can believe it is the only thing in the world, can install anything anywhere, attach to any port, without fear of conflict.
+
+# Docker
+
+Home>Dev box:
+> docker run simpatico
+
+Org>VPS:
+> docker run simpatico-decay admin-secret
+> cron secret 10s curl get stats 
+
+start: alpine-ubi
+mount: SimpaticoServer.java, cert
+apt-get install wget, jdk-17
+wget lib1
+wget lib2
+javac -cp lib1;lib2 SimpaticoServer.java
+SET secret = java -cp lib1;lib2 SimpaticoServer {a:1, b:2}
+# add secret admin token to these calls
+curl -HAuthorization:secret set log level FOO
+curl add tls cert
+curl get stats {mem, threads, ports, file handles}
+curl get log tail 50 grep ^WARN # Or do something with docker log # or do a websocket tail
+curl set condition GO
+
+If the java code changes, we will suffer a brief outage (equal to the time from `javac` to the last `curl`).
+If the Dockerfile changes, we will suffer a longer outage (the time from `docker run` to the last `curl`).
+We can output logs to the host VPS, and ideally these logs would be easy to combine, filter and sort.
+Rather than request logs, I'd like to store a record of invocations and uptime. Start, stop and admin messages only.
+
+# Podman 
+
+Taking the opportunity to check out Podman as a daemonless Docker alternative. 
+Install WSL 2 (had to turn on viritualization support in the bios, start an admin ps shell, and wsl2 --install)
+In Ubuntu 20.04 you have to do some pretty specific steps to add another repo and get everything working.
+sudo apt update
+sudo apt upgrade
+sudo apt install podman
