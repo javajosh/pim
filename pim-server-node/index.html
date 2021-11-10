@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Welcome</title>
+</head>
+<body>
+
+<script>
+  const get = key => localStorage.getItem(key);
+  const put = (key,value) => localStorage.setItem(key, value);
+
+  const App = get(window.origin) || {
+    origin: window.origin,
+    homepage: "simpatico.io or github.com/simpatico",
+    version: "1.0",
+    description: "Open a websocket and keep it up; track some lifetime stats",
+    webSocket: {
+      readyState: 0,
+      open: 0,
+      error: 0, errorLog: [],
+      message: 0, lastMessage: "",
+      close: 0,
+      started: 'time',
+      stopped: 'time',
+      uptime: 'duration',
+    },
+  };
+
+  const socket = new WebSocket('ws://127.0.0.1:2000',['json']);
+  socket.onopen = () => Object.assign(App.webSocket, {open: 1, started: new Date().getUTCDate()});
+  socket.onclose = () => Object.assign(App.webSocket, {close: 1,stopped: new Date().getUTCDate(), duration: 'subtract'});
+  socket.onerror = e => Object.assign(App.webSocket, {error: 1}, {errorLog: e});
+  socket.onmessage = e => {
+    Object.assign(App.webSocket, {message: 1}, {lastMessage: e.data});
+    console.log(e);
+  }
+  App.webSocket.currentSocket = socket;
+
+</script>
+</body>
+</html>

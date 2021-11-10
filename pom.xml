@@ -21,6 +21,7 @@
     <module>pim-server-java</module>
     <module>pim-server-postgres</module>
     <module>pim-client-java</module>
+      <module>pim-server-node</module>
   </modules>
 
 </project>
