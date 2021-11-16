@@ -1,9 +1,10 @@
 # Don't commit IDE configurations to make moving around the commit history easier.
-**/*.iml
-**/.idea
-**/.classpath
-**/.settings
-**/.DS_Store
+*.iml
+.idea
+.classpath
+.settings
+.run
+.DS_Store
 
 # Don't commit generated files
 *.class
