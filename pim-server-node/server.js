@@ -7,8 +7,9 @@ import { extname } from  'path'
 const port = 2000;
 
 const server = createServer(function (request, response) {
-  console.log('GET http://127.0.0.1:2000/');
-
+  console.log(`GET http://127.0.0.1:${port}/`);
+  // I want to know more about this request. Here is a
+  // good place to set a debugger, then run in debug
 
   let filePath = '.' + request.url;
   if (filePath === './') filePath = './index.html';
@@ -56,8 +57,9 @@ wss.on('connection', conn => {
   conn.on('message', msg => {
     console.log('MESSAGE %s', msg);
     conns.forEach(c => {
-      if (c && c.readyState === 1){ // add && c !== conn to not send to self
-        c.send(msg.toString());
+      if (c && c.readyState === 1){
+        // if (c !== conn) // don't send to the sender.
+          c.send(msg.toString());
       }
     })
   });
