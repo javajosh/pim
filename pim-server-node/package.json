@@ -9,8 +9,11 @@
   },
   "author": "SimpatiCorp",
   "license": "ISC",
-  "type" : "module",
+  "type": "module",
   "dependencies": {
     "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.17.0"
   }
 }
