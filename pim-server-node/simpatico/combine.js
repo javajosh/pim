@@ -1,7 +1,7 @@
 import {TYPES, getType, cast, tryToStringify, debug, now, assert, is} from './core.js';
 import {scatter, gather} from "./svg.js";
 
-export const combine = (target, msg, rules=getRules()) => {
+const combine = (target, msg, rules=getRules()) => {
   const {NUL,FUN,ARR,ANY} = TYPES;
   let ttarget = getType(target);
   let tmsg = getType(msg);
@@ -42,7 +42,7 @@ const getRules = () => {
       We cannot push null to an array because that will clear the array.
       Arrays immutable concat (this is one way to get a null in there!)
  */
-  const {UNDEF,NUL,STR,NUM,BOOL,FUN,OBJ,ARR,ELT,ANY,CORE,HANDLER,MSG} = TYPES;
+  const {NUL,STR,NUM,BOOL,FUN,OBJ,ARR,ELT,ANY,HANDLER,MSG} = TYPES;
   const rules = {};
   rules[NUL+ANY]  = (_,b) => b;
 
@@ -61,7 +61,7 @@ const getRules = () => {
   rules[ARR+ANY]  = (a,b) => [...a,b];
   rules[ARR+NUL]  = ()    => [];
 
-  rules[FUN+NUL]  = (a,b) => null;
+  rules[FUN+NUL]  = (_,__) => null;
   rules[FUN+ANY]  = (a,b) => a(b);
   rules[ANY+FUN]  = (a,b) => b(a);
 
@@ -121,7 +121,8 @@ const getRules = () => {
 };
 
 // Convenience functions that wrap combine
-export const combineAll = (arr, core={}) => arr.reduce(combine, core)
-export const combineAllArgs = (...args) => combineAll(Array.from(args))
-export default combine
+const combineAll = (arr, core={}) => arr.reduce(combine, core);
+const combineAllArgs = (...args) => combineAll(Array.from(args));
+
+export {combine, combineAll, combineAllArgs}
 

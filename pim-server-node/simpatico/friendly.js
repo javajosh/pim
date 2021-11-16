@@ -17,7 +17,7 @@ import { assert, is, tryToStringify, size } from "./core.js";
  */
 export const validate = (patternObj, valueObj) => {
   //gotcha: do not use getType predicate because handler !== object, etc
-  const isObjecty = a => is.obj(a) || is.msg(a)
+  const isObjecty = a => is.obj(a) || is.msg(a);
   if (!isObjecty(valueObj)) return patternObj;
   if (patternObj === null) return {};
   if (patternObj === {}) return undefined;

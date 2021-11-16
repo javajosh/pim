@@ -79,7 +79,7 @@ const TYPES = {
 };
 
 const getType = (a) => {
-  const {UNDEF,NUL,STR,FUN,OBJ,ARR,ELT,CORE,HANDLER,MSG} = TYPES;
+  const {UNDEF,NUL,STR,FUN,OBJ,ARR,ELT,HANDLER,MSG} = TYPES;
   let t = typeof a;
   if (t !== OBJ)        return t;
 
@@ -229,7 +229,7 @@ export {
   hasProp, getProp, propType, mapObject,
   equals, arrEquals, assertEquals,
   and, or, identity, curryLeft, curryRight, curry, compose,
-  peek, push, copy,
+  peek, push, copy, copy1, copy2, copy4,
   TYPES, getType, size, cast, is, as,
   RNG, shuffle
 }

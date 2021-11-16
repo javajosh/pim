@@ -1,8 +1,8 @@
 import {now, as}  from './core.js';
-import combine from './combine.js';
+import {combine} from './combine.js';
 
 
-export default (startValue= {}, reducer = combine) => {
+const rtree = (startValue= {}, reducer = combine) => {
   const ROOT = {
     id: 0,
     time: now(),
@@ -55,3 +55,5 @@ export default (startValue= {}, reducer = combine) => {
   }
   return {setFocus, getFocus, read, residue, add, ms, branches};
 }
+
+export {rtree};
