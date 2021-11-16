@@ -1,26 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Welcome</title>
+  <meta charset="utf-8">
+  <title>Simpatico</title>
 </head>
 <body>
 
 <script type="module">
   import { combine } from './simpatico/combine.js';
 
+  const load = false;
   const has = key => !!localStorage.getItem(key);
   const get = key => localStorage.getItem(key);
-  const put = (key,value) => localStorage.setItem(key, value);
+  const set = (key,value) => localStorage.setItem(key, value);
 
-  const state = has(window.origin) ? JSON.parse(get(window.origin)) : {
+  const state = has(window.origin) && load ? JSON.parse(get(window.origin)) : {
     origin: window.origin,
     homepage: "simpatico.io",
     version: "1.0",
     description: "Open a websocket and keep it up; track some lifetime stats",
+    mouse: {
+      events:[],
+      move: 0,
+    },
     webSocket: {
       readyState: 0,
       open: 0,
@@ -32,22 +34,22 @@
       uptime: 0,
     }
   };
-  window.state = state; window.combine = combine; //expose for adhoc usage
+  window.state = state; window.combine = combine; //expose state to global repl for adhoc usage
 
+  // Create a new WebSocket
   const wsProto = (window.location.protocol === "https:") ? "wss://" : "ws://";
   const webSocketURL = wsProto + window.location.host + "/ws";
-
-  const socket = new WebSocket(webSocketURL,['json']);
+  const socket = new WebSocket(webSocketURL, ['json']);
   socket.onopen = () => {
     state.webSocket = combine(state.webSocket, {open: 1, started: Date.now() + ''}); //stringify the number to ensure it replaces, and doesn't add
-    put(window.origin, JSON.stringify(state));
+    set(window.origin, JSON.stringify(state));
   }
   socket.onclose = () => {
     const started = state.webSocket.started;
     const stopped = Date.now() + ''; //stringify the number to ensure it replaces, and doesn't add
     const uptime = 1 * stopped - 1 * started;
     state.webSocket = combine(state.webSocket, {close: 1, stopped, uptime, currentSocket: null});
-    put(window.origin, JSON.stringify(state));
+    set(window.origin, JSON.stringify(state));
   }
   socket.onerror = e => {
     state.webSocket = combine(state.webSocket, {error: 1, errorLog: [e.data]});
@@ -57,10 +59,26 @@
     state.webSocket = combine(state.webSocket, {message: 1, lastMessage: e.data});
 
   }
-  state.currentSocket = socket;
+  state.currentSocket = socket; //expose socket to global repl
 
-  // Now you can send things to the server with socket.send(msg)
-  // To receive, it's the body of onmessage.
+  // all event handlers have the character "obj.oneventname": e => combine(state, state.process.obj.oneventname(e))
+  window.onmousemove = e => {
+    console.log(e);
+    state.mouse = combine(state.mouse, {
+      move: 1,
+      events: {event:'mousemove',
+        x0:34, y0:129, x1:54, y1: 100,
+        dt: (Date.now() - state.webSocket.started),
+        target: e.target
+      }
+    });
+  }
+
+
+  //aside1: pulling important values out of an object, 4 ways
+  // 1. Destructuring. Great if you only need to pluck things out of the larger object. Bad if you need to do more.
+  // 2. Pure function that takes the original object and returns a new, unique object with only concrete values.
+  // (This object may be recorded, directly or indirectly, which constrains what may be in it. Stick with dead data, JSON.)
 
 </script>
 </body>
