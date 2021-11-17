@@ -3,19 +3,28 @@ const log = console.log.bind(console)
 const debug = console.debug.bind(console)
 const info = console.info.bind(console)
 
-const error = msg => {throw new Error(msg)}
+const error = msg => {
+  throw new Error(msg)
+}
 const assert = (truthy, msg) => !!truthy ? true : error(msg)
 const assertThrows = fn => {
   assert(typeof fn === 'function', `assertThrows must take a function argument instead got ${getType(fn)}`);
   let throws = false, result;
-  try { result = fn() } catch (e) { throws = true }
+  try {
+    result = fn()
+  } catch (e) {
+    throws = true
+  }
   assert(throws, `Expected fn to throw, but it didn't and returned [${tryToStringify(result)}]`);
 };
 
 const tryToStringify = a => {
   if (typeof a !== 'object') return a;
   let result = '<Circular>';
-  try{ result = JSON.stringify(a); } catch (ignored) {}
+  try {
+    result = JSON.stringify(a);
+  } catch (ignored) {
+  }
   return result;
 }
 
@@ -23,30 +32,33 @@ const hasProp = (obj, prop) => obj.hasOwnProperty(prop)
 const getProp = (obj, prop, defaultValue = null) => hasProp(obj, prop) ? obj[prop] : defaultValue;
 const propType = (obj, prop) => getType(obj[prop])
 // noinspection JSCheckFunctionSignatures
-const mapObject = (a,fn) => Object.fromEntries(Object.entries(a).map(fn)) //fn([k,v]) => [k2,v2]
-const equals = (a,b) => typeof a === 'object' ? tryToStringify(a) === tryToStringify(b) : a === b; //needs work
-const arrEquals = (a,b) =>
-  as.arr(a) && as.arr(b) && a.length === b.length &&
-  a.map((v,i) => v === b[i]).reduce(and, true)
+const mapObject = (a, fn) => Object.fromEntries(Object.entries(a).map(fn)) //fn([k,v]) => [k2,v2]
+const equals = (a, b) => typeof a === 'object' ? tryToStringify(a) === tryToStringify(b) : a === b; //needs work
+const arrEquals = (a, b) =>
+    as.arr(a) && as.arr(b) && a.length === b.length &&
+    a.map((v, i) => v === b[i]).reduce(and, true)
 
-const assertEquals = (actual, expected, msg='') =>
-  assert(equals(actual, expected), `actual is ${tryToStringify(actual)} but expected ${tryToStringify(expected)}. ${msg}`)
+const assertEquals = (actual, expected, msg = '') =>
+    assert(equals(actual, expected), `actual is ${tryToStringify(actual)} but expected ${tryToStringify(expected)}. ${msg}`)
 
 // Functional logic
-const and = (a,b) => !!a && !!b
-const or = (a,b) => !!a || !!b
+const and = (a, b) => !!a && !!b
+const or = (a, b) => !!a || !!b
 
 // Higher order functions
 const identity = a => a
-const curryLeft = (f, a) => b => f(a,b) //left to right
-const curryRight = (f, a) => b => f(b,a) //right to left
+const curryLeft = (f, a) => b => f(a, b) //left to right
+const curryRight = (f, a) => b => f(b, a) //right to left
 const curry = curryLeft
 const compose = (f, g) => a => g(f(a))
 
 // It is tempting to add peek like this, but it's in bad taste. So use the functional version:
 // Array.prototype.peek = function(){return this.length > 0 ? this[this.length-1] : null};
-const peek = (arr, defaultValue=null) => arr.length ? arr[arr.length - 1] : defaultValue
-const push = (arr, a) => {arr.push(a); return arr} //mutating
+const peek = (arr, defaultValue = null) => arr.length ? arr[arr.length - 1] : defaultValue
+const push = (arr, a) => {
+  arr.push(a);
+  return arr
+} //mutating
 
 // Copies good for arrays
 const copy1 = a => [...a]
@@ -79,23 +91,23 @@ const TYPES = {
 };
 
 const getType = (a) => {
-  const {UNDEF,NUL,STR,FUN,OBJ,ARR,ELT,HANDLER,MSG} = TYPES;
+  const {UNDEF, NUL, STR, FUN, OBJ, ARR, ELT, HANDLER, MSG} = TYPES;
   let t = typeof a;
-  if (t !== OBJ)        return t;
+  if (t !== OBJ) return t;
 
-  if (a === null)       return NUL;
-  if (a === undefined)  return UNDEF;
+  if (a === null) return NUL;
+  if (a === undefined) return UNDEF;
   if (Array.isArray(a)) return ARR;
 
   if (
-    typeof window  !== 'undefined' &&
-    typeof Element !== 'undefined' &&
-    a instanceof Element
-  )  return ELT;
+      typeof window !== 'undefined' &&
+      typeof Element !== 'undefined' &&
+      a instanceof Element
+  ) return ELT;
 
   // Simpatico types
   if (propType(a, HANDLER) === FUN) return HANDLER;
-  if (propType(a, MSG) === STR)     return MSG;
+  if (propType(a, MSG) === STR) return MSG;
   // Note: properly typing the CORE type messes up the message cascade
 
   return OBJ;
@@ -103,8 +115,8 @@ const getType = (a) => {
 
 const size = (a) => {
   const t = getType(a);
-  const {UNDEF,NUL,NUM,STR,FUN,OBJ,ARR,ELT,HANDLER,MSG} = TYPES;
-  switch (t){
+  const {UNDEF, NUL, NUM, STR, FUN, OBJ, ARR, ELT, HANDLER, MSG} = TYPES;
+  switch (t) {
     case NUM:
       return a;
     case STR: // todo: deal with unusual encodings
@@ -126,7 +138,7 @@ const size = (a) => {
 // Cast a string into another type - only string, number and boolean supported, currently.
 // Mainly supports the case when JS returns NaN when parsing a string
 const cast = (type, str) => {
-  const {STR,NUM,BOOL} = TYPES;
+  const {STR, NUM, BOOL} = TYPES;
   assert(getType(str) === 'string', `string cast value required; called with [${getType(str)}]`);
 
   switch (type) {
@@ -146,15 +158,15 @@ const cast = (type, str) => {
 
 // is looks something like {NUL: a => getType(a) === NUL, STR: a => getType(a) === STR ...}
 // ASSERT wraps with an assertion  {NUL: (a, msg) => assert(getType(a) === NUL, msg), STR: (a,msg) => assert(getType(a) === STR, msg)}
-const is = mapObject(TYPES,([k, v]) =>
-  [k.toLowerCase(), a => getType(a) === v]
+const is = mapObject(TYPES, ([k, v]) =>
+    [k.toLowerCase(), a => getType(a) === v]
 )
 is.int = (a) => is.num(a) && (a % 1 === 0)
 is.exists = a => (typeof a !== 'undefined') && (a !== null)
 is.between = (lo, hi, a) =>
-  size(lo) <= size(hi) &&
-  size(lo) <= size(a) &&
-  size(hi) >= size(a);
+    size(lo) <= size(hi) &&
+    size(lo) <= size(a) &&
+    size(hi) >= size(a);
 
 is.t = () => true
 is.f = () => false
@@ -167,9 +179,9 @@ is.any = arr => as.arr(arr) && arr.reduce(or, false)
 is.same = (arr) => {
   as.arr(arr);
   let prev = arr[0], curr;
-  for(let i = 1; i < arr.length; i++){
+  for (let i = 1; i < arr.length; i++) {
     curr = arr[i];
-    if (!equals(curr, prev)){
+    if (!equals(curr, prev)) {
       return false;
     }
   }
@@ -181,8 +193,8 @@ is.arrEquals = arrEquals;
 
 // This is awkward because we have to guess the cardinality of the predicate.
 // Another reason why the more straight-forward form is probably better.
-const as = mapObject(is,([k,v]) =>
-  [k, (a, b, c, d) => assert(v(a,b,c), d)]
+const as = mapObject(is, ([k, v]) =>
+    [k, (a, b, c, d) => assert(v(a, b, c), d)]
 );
 
 // A simple PRNG inside the browser.
@@ -196,6 +208,7 @@ function RNG(seed) {
   this.c = 12345;
   this.state = seed ? seed : Math.floor(Math.random() * (this.m - 1));
 }
+
 RNG.prototype.nextInt = function () {
   this.state = (this.a * this.state + this.c) % this.m;
   return this.state;
