@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="googlebot" content="noindex">
   <title>Simpatico</title>
+
   <link rel="icon" href="/icon/favicon.ico" sizes="any"><!-- 32×32 -->
   <link rel="icon" href="/icon/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png"><!-- 180×180 -->
   <link rel="manifest" href="/icon/manifest.webmanifest">
+
   <noscript>
     <h3>Simpatico requires javascript to be enabled</h3>
     <p>That said there are more important things than Simpatico. Go outside and enjoy nature.</p>
   </noscript>
+
 </head>
 <body>
 
-<img src="./icon/icon.svg" alt="a very fancy logo with 3 loops and 6 interlinked balls" width="100">
+<img src="./icon/icon.svg" width="100px" alt="a very fancy logo with 3 loops and 6 linked circles" >
 
 <script type="module">
   import { combine } from './simpatico/combine.js';
@@ -65,7 +69,7 @@
   }
   socket.onerror = e => {
     console.log('onerror %s', e);
-    state.webSocket = combine(state.webSocket, {error: 1, errorLog: [e.data]});
+    state.webSocket = combine(state.webSocket, {error: 1, errorLog: [e]});
   }
   socket.onmessage = e => {
     console.log('onmessage %s', e);
@@ -74,17 +78,10 @@
   }
   state.currentSocket = socket; //expose socket to global repl
 
-  // all event handlers have the character "obj.oneventname": e => combine(state, state.process.obj.oneventname(e))
-  window.onmousemove = e => {
-    console.log(e);
-    state.mouse = combine(state.mouse, {
-      move: 1,
-      events: {event:'mousemove',
-        x0:34, y0:129, x1:54, y1: 100,
-        dt: (Date.now() - state.webSocket.started),
-        target: e.target
-      }
-    });
+  // Listen for mouse events
+  window.onmousemove = ({type = "mousemove", x, y, movementX: dx, movementY :dy, target}) => {
+    console.log({type, x, y, dx, dy, target});
+    state.mouse = combine(state.mouse, {move: 1, events: {type, x, y, dx, dy, target}});
   }
 
 
