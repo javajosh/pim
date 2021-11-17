@@ -214,6 +214,22 @@ RNG.prototype.nextRange = function (start, end) {
 RNG.prototype.choice = function (arr) {
   return arr[this.nextRange(0, arr.length)];
 }
+
+// A way to get a URL encoded random 126-bit string.
+const nanoid = (t = 21) => {
+  let e = "";
+  let r = crypto.getRandomValues(new Uint8Array(t));
+  for (; t--;) {
+    let n = 63 & r[t];
+    e += (n < 36) ?
+        n.toString(36) :
+        (n < 62) ?
+            (n - 26).toString(36).toUpperCase() :
+            n < 63 ? "_" : "-"
+  }
+  return e
+};
+
 // Fisher-Yates shuffle using ES6 swap
 const shuffle = arr => {
   as.arr(arr);
@@ -231,5 +247,5 @@ export {
   and, or, identity, curryLeft, curryRight, curry, compose,
   peek, push, copy, copy1, copy2, copy4,
   TYPES, getType, size, cast, is, as,
-  RNG, shuffle
+  RNG, shuffle, nanoid
 }
