@@ -55,37 +55,37 @@
   const webSocketURL = wsProto + window.location.host + "/ws";
   const socket = new WebSocket(webSocketURL, ['json']);
   socket.onopen = e => {
-    console.log('onopen %s', e);
+    console.log('client>> socket.onopen() e.target.url = %s', e.target.url);
     state.webSocket = combine(state.webSocket, {open: 1, started: Date.now() + ''}); //stringify the number to ensure it replaces, and doesn't add
     set(window.origin, JSON.stringify(state));
+    socket.send('hello from client');
   }
-  socket.onclose = e => {
-    console.log('onclose %s', e);
+  socket.onclose = _ => {
     const started = state.webSocket.started;
     const stopped = Date.now() + ''; //stringify the number to ensure it replaces, and doesn't add
     const uptime = 1 * stopped - 1 * started;
+    console.log('client>> socket.onclose() -  {started, stopped, uptime, close} = {%s, %s, %s, %s}', started, stopped, uptime, state.webSocket.close);
     state.webSocket = combine(state.webSocket, {close: 1, stopped, uptime, currentSocket: null});
     set(window.origin, JSON.stringify(state));
   }
   socket.onerror = e => {
-    console.log('onerror %s', e);
+    console.log('client>> socket.onerror %s', e);
     state.webSocket = combine(state.webSocket, {error: 1, errorLog: [e]});
   }
   socket.onmessage = e => {
-    console.log('onmessage %s', e);
-    state.webSocket = combine(state.webSocket, {message: 1, lastMessage: e.data});
+    console.log('client>> socket.onmessage %s', e.data);
+    state.webSocket = combine(state.webSocket, {message: 1, lastMessage: e.data.toString()});
 
   }
   state.currentSocket = socket; //expose socket to global repl
 
   // Listen for mouse events
   window.onmousemove = ({type = "mousemove", x, y, movementX: dx, movementY :dy, target}) => {
-    console.log({type, x, y, dx, dy, target});
-    state.mouse = combine(state.mouse, {move: 1, events: {type, x, y, dx, dy, target}});
+    const event = {type, x, y, dx, dy, target};
+    //console.log(event);
+    state.mouse = combine(state.mouse, {move: 1, events: event});
   }
-
-
-  //aside1: pulling important values out of an object, 4 ways
+  // aside: pulling important values out of an object, 2 ways
   // 1. Destructuring. Great if you only need to pluck things out of the larger object. Bad if you need to do more.
   // 2. Pure function that takes the original object and returns a new, unique object with only concrete values.
   // (This object may be recorded, directly or indirectly, which constrains what may be in it. Stick with dead data, JSON.)

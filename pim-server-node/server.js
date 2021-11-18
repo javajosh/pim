@@ -6,6 +6,7 @@ import { getProp } from "./simpatico/core.js";
 
 
 const port = 2000;
+const echo = true;
 
 const server = createServer(function (request, response) {
   console.log(`${request.method} http://127.0.0.1:${port}/`);
@@ -46,18 +47,23 @@ const server = createServer(function (request, response) {
 
 
 const wss = new WebSocketServer({server});
-// Broadcast all inbound messages to all connections.
-// Later we'll add PKI and point-to-point fanout
 const conns = [];
 wss.on('connection', conn => {
-  console.log('wss.onconnection => {conn:{url:%s, protocol:%s}}', conn.url, conn.protocol);
+  console.log('wss.onconnection => {conn:{url:%s, protocol:%s, _socket.remoteAddress: %s}}',
+      conn.url, conn.protocol, conn._socket.remoteAddress);
+  // Confusingly, url is always null. why? We get teh remoteAddress, but everything else we know must come through as a message.
+  // what we need is an identifier. at first a string, then a pubkey and a list of decaying GUIDs.
   conns.push(conn);
-  conn.on('message', msg => {
-    console.log('wss.conn.onmessage msg %s', msg.toString());
+  conn.send('hello from server');
+  conn.on('message', e => {
+    const msg = e.toString();
+    console.log('wss.conn.onmessage msg %s', msg);
     conns.forEach(c => {
       if (c && c.readyState === 1){
-        // if (c !== conn) // don't send to the sender.
-          c.send(msg.toString());
+        if (echo || (c !== conn)) { // don't send back to originator unless echo is on
+          console.log('wss.conn.send msg %s', msg);
+          c.send(msg + ' from server');
+        }
       }
     })
   });
