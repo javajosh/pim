@@ -49,19 +49,20 @@ const server = createServer(function (request, response) {
 const wss = new WebSocketServer({server});
 const conns = [];
 wss.on('connection', conn => {
+  const connId = conns.length;
   console.log('wss.onconnection => {conn:{url:%s, protocol:%s, _socket.remoteAddress: %s}}',
       conn.url, conn.protocol, conn._socket.remoteAddress);
   // Confusingly, url is always null. why? We get teh remoteAddress, but everything else we know must come through as a message.
   // what we need is an identifier. at first a string, then a pubkey and a list of decaying GUIDs.
   conns.push(conn);
-  conn.send('hello from server');
+  conn.send(`hello ${connId} from server`);
   conn.on('message', e => {
     const msg = e.toString();
-    console.log('wss.conn.onmessage msg %s', msg);
+    console.log('wss.conn.onmessage id %s msg %s', connId, msg);
     conns.forEach(c => {
       if (c && c.readyState === 1){
         if (echo || (c !== conn)) { // don't send back to originator unless echo is on
-          console.log('wss.conn.send msg %s', msg);
+          console.log('wss.onconnection.onmessage => %s', msg);
           c.send(msg + ' from server');
         }
       }
