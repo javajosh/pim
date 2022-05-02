@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>groupId</groupId>
-  <artifactId>javajosh-pim</artifactId>
+  <groupId>com.javajosh</groupId>
+  <artifactId>javajosh.pim</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <packaging>pom</packaging>
@@ -17,11 +17,11 @@
   </properties>
 
   <modules>
-    <module>pim-core-java</module>
-    <module>pim-server-java</module>
-    <module>pim-server-postgres</module>
-    <module>pim-client-java</module>
-      <module>pim-server-node</module>
+    <module>pim.client.java</module>
+    <module>pim.shared.java</module>
+    <module>pim.server.java</module>
+    <module>pim.server.node</module>
+    <module>pim.server.postgres</module>
   </modules>
 
 </project>

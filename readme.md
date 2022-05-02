@@ -1,9 +1,15 @@
 # PIM - The Personal Inventory Manager
 
-Track all your stuff. *A full-stack tech demo from [@javajosh](https://twitter.com/javajosh) of [javajosh.com](https://javajosh.com); 
-code at [github.com/javajosh/pim](https://github.com/javajosh/pim) live demo hosted at [javajosh.com/pim](https://javajosh.pim) (c) 2021*.
+Track your stuff. A full-stack tech demo.
 
-The core of the demo is a Java webapp talking to a relational database, with some [improvements](pim-server-java/docs/tech-stack-discussion.md)
+  * demo:  [javajosh.com/pim](https://javajosh.pim), 
+  * project: [dev.azure.com/javajosh/pim](https://dev.azure.com/javajosh/pim)
+  * repo : [github.com/javajosh/pim](https://github.com/javajosh/pim),
+  * author: [jay-oh-ess-atch@javajosh.com](mailto:$#%$@javajosh.com) &mdash;
+       [@javajosh](https://twitter.com/javajosh)
+  * legal: ISC license &mdash; Copyright &copy; 2021 &mdash; USA
+
+The core of the demo is a Java webapp talking to a relational database, with some [improvements](pim-server-java/docs/tech-stack-discussion.md).
 
 [install log](./install_log.md)
 

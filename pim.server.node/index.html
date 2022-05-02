@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="googlebot" content="noindex">
+  <title>Simpatico</title>
+
+  <link rel="icon" href="/icon/favicon.ico" sizes="any"><!-- 32×32 -->
+  <link rel="icon" href="/icon/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png"><!-- 180×180 -->
+  <link rel="manifest" href="/icon/manifest.webmanifest">
+  <style>
+    * {background-color: black; color: bisque}
+  </style>
+
+  <noscript>
+    <h3>Simpatico requires javascript to be enabled</h3>
+    <p>That said there are more important things than Simpatico. Go outside and enjoy nature.</p>
+  </noscript>
+
+</head>
+<body>
+
+<img src="./icon/icon.svg" width="100px" alt="a very fancy logo with 3 loops and 6 linked circles" >
+
+<h1>Simpatico</h1>
+<p>Your computer is a bucket, gathering measurements about the world, and in return it shows you wonders. It is a
+window into the world beyond anything anyone dreampt possible. The foundation of it is all is, yes, the transistor
+and the integrated circuit, and recent inventions around display, battery, and even radio technology has made
+always on, internet connected devices the norm. And every program you run on these devices is a bucket.</p>
+
+<p>The browser is a bucket, too. Actually, the technical definition of a bucket is a browser tab on a concrete device.
+We can introduce simple notation to acquire a new device, install a new browser, and create a new tab, for any URL.</p>
+
+<p>The functionality we expect is the following:</p>
+<ol>
+  <li>The Server - a nodejs process</li>
+  <ol>
+    <li>$ git clone github/simpatico/simpatico</li>
+    <li>$ cd simpatico</li>
+    <li>$ cd pim.server.node</li><!-- Lots of other options here, too. -->
+    <li>$ npm run start</li> <!-- Consider npx simpatico -->
+  </ol>
+
+  <li>The Client - a Modern Browser Tab</li>
+  <ol>
+    <li>subl index.html</li>
+    <li>open http://host:port/index.html</li>
+    <li>f11 or cmd+shift+i to open dev tools</li>
+    <li>f5 or cmd+r to refresh</li>
+  </ol>
+</ol>
+<p>Once loaded, the fun begins! The independant data are key presses and mouse movements and clicks. The server
+often tries to make it easy to convert those events into a relatively meaty, structured request. Something like filling
+out a form. However, the pattern is more general than that, in that you can see these events as advancing some application state.
+One degenerate case is when you just squirrel away all events, and do nothing else with them.</p>
+
+<p>So there is this image of a program as a screen region into which events (another, slightly worse, name for measurements)</p>
+
+<p>Simpatico is a set of ideas, and this is a technical introduction to them. It is also a piece of concrete software that I invite you to use!
+Simpatico is currently simply a service you might use to create ad hoc connections between your own devices, hosted within the
+browser tabs of each of your devices. In this way, you can describe an important part of your "personal graph" that
+reaches out into the world, and this layer is the one that directly connects to the internet: your phone, your laptop.
+</p>
+
+<p>Each device will run Simpatico for the first time with a link. The exception is the special first device, or root device,
+which is the first device to connect to a new nexus. This is a special device in that it has final say in the distribution
+of messages on that nexus. However, it is not stateful and only does limited computation on its inputs. A root nexus is always
+named, the first of this is rooted at simpatico.io. A nexus is a very small, inexpensive process that only
+  serves ordinary http resources, and then as a websocket server connects clients to each other. Each client generates a
+  public private keypair. The private key is stored, encrypted, in your localstorage. Your public key is passed
+  as the first argument after websocket connect, telling the nexus your device key. Next, you generate an invite from device 1
+  and get it to device 2, and open it in your default browser. You now have a running node on the Simpatico network,
+  and realtime communication between two of your own devices, using end-to-end RSA encryption.
+</p>
+
+<p>This doesn't go far enough! We still have not put enough useful constraints on this software. What we really want to
+use it for is to build software, in the browser, from the highest quality components avialable in the world. But what kind
+of software is it we want to build? Productivity software, but also software to help me measure myself, starting with my
+devices and my data. But extending to my things and accounts, and even personal relationships. You will find a neat
+representation of all of this within the personal graph, and Simpatico is designed to express this data structure
+cleanly, and in a highly distributable way.</p>
+
+<p>Ultimately, my goal is to empower the individual against the overwhelming power of the institution. For my entire
+life I've wanted to make a substantial impact on this state of things, always being in favor of the underdog,
+never wanting the easy path of "win more". But more and more I think we should use our remarkable tools for our own
+benefit and stop letting ourselves be overwhelmed by software that is free, but far too expensive.</p>
+
+<p>It is time to ask our security services to make a sacrifice. It is time to create an internet of people for the people, where
+censorship becomes very difficult. Where the infrastructure is designed to be inexpensive, stateless, easy to run on anything.
+I believe this set of freedoms is effectively part of the 2nd amendment: the right to bear arms, and the right
+to assemble, as a bulwark against tyranny must include the right to private communication, and private
+  communication patterns.</p>
+
+<p>The argument against both freedoms is always going to be the same, and it's an honest one: it blinds us, the security forces say.
+If they are just and good, perhaps this concerns you. But if they are wicked and corrupt, perhaps this is a great boon.
+It is easy to imagine that your attitude depends entirely on your relationship with the nation in which you currently
+exist, which of these positions you might take. But recognize that there is no meaningful way to both maintain only the right
+of the just to organize against oppression of the corrupt, but also maintain the right of the unjust to organize against
+  the weakness of the just.</p>
+
+<p>So, yes, to be a nation we must trust our neighbors with guns, and with secret, secure comms with each other. We should
+hope to keep the lines of communication open between any factional conflict, and that reasonable diplomacy has a chance to work.
+When these things break down, violence is in the air. In most such cases, it's pretty clear who's wrong. In this case,
+it's clearly the Trumpians. They would destroy our democracy to appease the ego worshiping, cruel, dishonest bastard named
+Donald J Trump. Why? What do they gain by abandoning sense? What do they gain by sacrificing themselves for an odious man who
+repays them with derision and disgust? What can you make of your dignity, Ted Cruz? It's easy to slip into a casual partisan whine here,
+but I'm honestly asking these questions. My best answer is that it's a simple will-to-power problem, and nothing will
+cure it except win-or-loose violence. My worry is that my liberal brothers and sisters don't have the stomach for blood.
+In which case, they deserve to lose.</p>
+
+<script type="module">
+  import { combine } from './simpatico/combine.js';
+
+  const load = false;
+  const has = key => !!localStorage.getItem(key);
+  const get = key => localStorage.getItem(key);
+  const set = (key,value) => localStorage.setItem(key, value);
+
+  const state = (has(window.origin) && load) ? JSON.parse(get(window.origin)) : {
+    origin: window.origin,
+    homepage: "simpatico.io",
+    version: "1.0",
+    description: "Open a websocket and keep it up; track some lifetime stats",
+
+    mouse:{
+      move: 0,
+      mousedown: 0,
+      mouseup:0,
+      events: [],
+    },
+    keyboard:{
+      keydown: 0,
+      keyup: 0,
+      events:[],
+    },
+    webSocket: {
+      opened: 0,
+      closed: 0,
+      events:[],
+    },
+    shared:{},
+    local:{},
+  };
+  window.state = state;
+  window.combine = combine; //expose state to global repl for adhoc usage
+
+
+  // ============Listen for mouse events===============
+  window.onmousemove = ({type = "mousemove", x, y, movementX: dx, movementY :dy, target}) => {
+    const event = {type, x, y, dx, dy, target};
+    console.log(event);
+    state.mouse = combine(state.mouse,
+            {move: 1, events: event}
+    );
+  }
+  window.onmousedown = ({type = "mousedown", x, y, target}) => {
+    const event = {type, x, y, target};
+    console.log(event);
+    state.mouse = combine(state.mouse,
+            {mousedown: 1, events: event}
+    );
+  }
+  window.onmouseup = ({type = "mouseup", x, y, target}) => {
+    const event = {type, x, y, target};
+    console.log(event);
+    state.mouse = combine(state.mouse,
+            {mouseup: 1, events: event}
+    );
+  }
+
+  // ============Listen for keyboard events============
+  window.onkeydown = ({type = "keydown", key, target}) => {
+    const event = {type, key, target};
+    console.log(event);
+    state.keyboard = combine(state.keyboard,
+            {keydown: 1, events: event}
+    );
+  }
+  window.onkeyup = ({type = "keyup", key, target}) => {
+    const event = {type, key, target};
+    console.log(event);
+    state.keyboard = combine(state.keyboard,
+            {keyup: 1, events: event, lastKey: key}
+    );
+  }
+  // aside: pulling important values out of an object, 2 ways
+  // 1. Destructuring. Great if you only need to pluck things out of the larger object. Bad if you need to do more.
+  // 2. Pure function that takes the original object and returns a new, unique object with only concrete values.
+  // (This object may be recorded, directly or indirectly, which constrains what may be in it. Stick with dead data, JSON.)
+
+  // ============Listen for network events============
+  const wsProto = (window.location.protocol === "https:") ? "wss://" : "ws://";
+  const webSocketURL = wsProto + window.location.host + "/ws";
+  const socket = new WebSocket(webSocketURL, ['json']);
+  state.currentSocket = socket; // add a reference to socket to state
+
+  socket.onopen = e => {
+    console.log('browser.socket.onopen() e.target.url = %s', e.target.url);
+    state.webSocket = combine(state.webSocket,
+            {opened: 1}
+    );
+    set(window.origin, JSON.stringify(state));
+    socket.send('hello from browser');
+  }
+  socket.onclose = _ => {
+    const started = state.webSocket.started;
+    const stopped = Date.now() + ''; //stringify the number to ensure it replaces, and doesn't add
+    const uptime = 1 * stopped - 1 * started;
+    console.log('browser.socket.onclose() -  {started: %s, stopped: %s, uptime: %s, close: %s}', started, stopped, uptime, state.webSocket.close);
+    state.webSocket = combine(state.webSocket,
+            {close: 1, stopped, uptime, currentSocket: null}
+    );
+    set(window.origin, JSON.stringify(state));
+  }
+  socket.onerror = e => {
+    console.log('browser.socket.onerror %s', e);
+    state.webSocket = combine(state.webSocket,
+            {error: 1, errorLog: [e]}
+    );
+  }
+  socket.onmessage = e => {
+    // Optional troubleshooting, we store the last message; we also increment the message counter.
+    const msg = e.data.toString();
+    console.log('browser.socket.onmessage %s', msg);
+    state.webSocket = combine(state.webSocket,
+            {message: 1, lastMessage: msg}
+    );
+  }
+
+</script>
+</body>
+</html>

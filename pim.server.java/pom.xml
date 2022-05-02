@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <description>Java Server tech demo with Dropwizard</description>
+  <url>https://github.com/javajosh/pim</url>
+
+  <parent>
+    <groupId>com.javajosh</groupId>
+    <artifactId>javajosh.pim</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>pim.server.java</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <dropwizard.version>2.0.25</dropwizard.version>
+    <postgresql.version>42.3.1</postgresql.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.javajosh</groupId>
+      <artifactId>pim-core-java</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-client</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-jdbi3</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-assets</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.javajosh</groupId>
+      <artifactId>pim-core-java</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.sebastian-daschner</groupId>
+        <artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+        <version>0.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>analyze-jaxrs</goal>
+            </goals>
+            <configuration>
+              <!-- Available backends are plaintext (default), swagger and asciidoc -->
+              <backend>swagger</backend>
+              <deployedDomain>javajosh.com</deployedDomain>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
