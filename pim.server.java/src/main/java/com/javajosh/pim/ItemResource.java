@@ -35,7 +35,9 @@ public class ItemResource {
   public Item getRandomItem(@QueryParam("name") Optional<String> name) {
     int randomId = new Random().nextInt();
     log.debug("hello {}", randomId);
-    return new Item(randomId, name.orElse(""));
+    // FIXME needs more params
+    // return new Item(randomId, name.orElse(""));
+    return null;
   }
 
   @GET

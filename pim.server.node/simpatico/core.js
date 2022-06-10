@@ -37,7 +37,7 @@ const equals = (a, b) => typeof a === 'object' ? tryToStringify(a) === tryToStri
 const arrEquals = (a, b) =>
     as.arr(a) && as.arr(b) && a.length === b.length &&
     a.map((v, i) => v === b[i]).reduce(and, true)
-
+const reverseString = (a) => a.split('').reverse().join('')
 const assertEquals = (actual, expected, msg = '') =>
     assert(equals(actual, expected), `actual is ${tryToStringify(actual)} but expected ${tryToStringify(expected)}. ${msg}`)
 
@@ -256,7 +256,7 @@ const shuffle = arr => {
 export {
   now, log, debug, info, error, assert, assertThrows, tryToStringify,
   hasProp, getProp, propType, mapObject,
-  equals, arrEquals, assertEquals,
+  equals, arrEquals, assertEquals, reverseString,
   and, or, identity, curryLeft, curryRight, curry, compose,
   peek, push, copy, copy1, copy2, copy4,
   TYPES, getType, size, cast, is, as,

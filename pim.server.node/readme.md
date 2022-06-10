@@ -14,7 +14,7 @@ $ open http://127.0.0.1:2000                # index.html
 We want to bake the program into the image for production deployment. But this is, in general, too slow for a BTD loop.
 The difference is, in general, one line of Dockerfile.                             
 
-A developer will want to install `nodejs` directly and replace the `docker` lines with:
+A developer will want to install `nodejs` directly and replace the `docker` lines with something like:
 
 ```shell
 $ apt install nodejs 
@@ -23,9 +23,11 @@ $ npm install # package.json
 $ node server.js  # server.js
 ..
 ```
-Note: This project is not sensitive to git, docker, node or browser versions. Or even library versionbs.
+
+(You'll want to install [nvm](https://github.com/nvm-sh/nvm) and then `nvm install 14` and then `nvm use 14`)
+Note: This project is *generally* not sensitive to git, docker, node or browser versions. Or even library versions.
 But it also doesn't go out of it's way to be compatible with unusual environments. 
-These instructions are given for Linux, but they apply equally to Windows and macOS.
+These instructions are given for Linux, but they apply equally to Windows and macOS with some small modifications.
 
 # Debugging
 
