@@ -16,7 +16,7 @@
         </plugins>
     </build>
 
-    <parent>
+  <parent>
     <groupId>com.javajosh</groupId>
     <artifactId>javajosh.pim</artifactId>
     <version>1.0-SNAPSHOT</version>
